@@ -1,0 +1,16 @@
+[
+    {
+        "nodeType": "TYPO3.Neos.NodeTypes:Image",
+        "properties": {
+            "caption": "Standup",
+            "image": "https://storage.googleapis.com/target.wwwneosio.neos.eu.beach.flownative.net/4d9f487ceeea905e7ce46bb58a71e68063739b68/Sprint_Dresden_standup.jpg"
+        }
+    },
+    {
+        "nodeType": "TYPO3.Neos.NodeTypes:Image",
+        "properties": {
+            "caption": "Retro",
+            "image": "https://storage.googleapis.com/target.wwwneosio.neos.eu.beach.flownative.net/dd038c5ff20759b51fd61646aee3b16677af68bd/Sprint_Dresden_retro.jpg"
+        }
+    }
+]

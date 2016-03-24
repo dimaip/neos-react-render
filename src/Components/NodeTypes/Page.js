@@ -1,3 +1,4 @@
+import connect from 'API/connect';
 import Carousel from './Carousel';
 import Layout from 'Components/Layout';
 

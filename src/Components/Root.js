@@ -1,22 +1,24 @@
 import React from 'react';
 import Transmit from 'react-transmit';
+import 'Components/NodeTypes/index';
 import ContentCase from 'Components/ContentCase';
+import Layout from 'Components/Layout';
 
-const Carousel = (props) => (
-  <ul className='Carousel'>
-    {props.data.map((itemProps, i) => <li key={i}><ContentCase {...itemProps} /></li>)}
-  </ul>
+const Root = ({data}) => (
+  <Layout>
+    {data.map((i, j) => <ContentCase key={j} {...i} />)}
+  </Layout>
 );
-Carousel.propTypes = {
+Root.propTypes = {
   data: React.PropTypes.array.isRequired
 };
 
-const WrappedCarousel = Transmit.createContainer(Carousel, {
+const WrappedRoot = Transmit.createContainer(Root, {
   initialVariables: {},
   fragments: {
     data() {
       let nodes;
-      return fetch('http://localhost:3000/carousel.json')
+      return fetch('http://localhost:3000/main.json')
         .then(r => r.json())
         .then(i => {
           nodes = i;
@@ -34,4 +36,4 @@ const WrappedCarousel = Transmit.createContainer(Carousel, {
   }
 });
 
-export default WrappedCarousel;
+export default WrappedRoot;

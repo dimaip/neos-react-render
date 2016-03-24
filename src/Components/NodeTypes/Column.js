@@ -1,11 +1,37 @@
+import React from 'react';
+import Transmit from 'react-transmit';
 import ContentCase from 'Components/ContentCase';
-@connect(({node}) => ({
-        content: q(node).children().get()
-    })
-)
-class Column extends React.Component {
-    render() {
-        const content = this.props.content.map((i, key) => <li key={key}><ContentCase node={i} /></li>);
-        return <ul {...this.props.attributes}>{content}</ul>;
+
+const Column = (props) => (
+  <div className='Column'>
+    {props.data.map((itemProps, i) => <ContentCase key={i} {...itemProps} />)}
+  </div>
+);
+Column.propTypes = {
+  data: React.PropTypes.array.isRequired
+};
+
+const WrappedColumn = Transmit.createContainer(Column, {
+  initialVariables: {},
+  fragments: {
+    data() {
+      let nodes;
+      return fetch('http://localhost:3000/column.json')
+        .then(r => r.json())
+        .then(i => {
+          nodes = i;
+          return Promise.all(i.map(node => {
+            return ContentCase.getFragment('data', {node});
+          }));
+        })
+        .then(datas => {
+          return datas.map((i, j) => ({
+            node: nodes[j],
+            data: i
+          }));
+        });
     }
-}
+  }
+});
+
+export default WrappedColumn;
