@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Transmit from 'react-transmit';
 import {getRenderer} from 'API/renderers';
+import {q} from 'Vendor/FlowQuery';
 
 class ContentCase extends Component {
   static propTypes = {

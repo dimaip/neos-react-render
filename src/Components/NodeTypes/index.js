@@ -1,14 +1,16 @@
 import {setRenderers} from 'API/renderers';
-import Text from './Text';
-import Image from './Image';
-import Carousel from './Carousel';
-import Row from './Row';
+import Page from './Page';
+import ContentCollection from './ContentCollection';
 import Column from './Column';
+import Headline from './Headline';
+import Text from './Text';
 
 setRenderers({
+  'TYPO3.NeosDemoTypo3Org:Homepage': Page,
+  'TYPO3.Neos.NodeTypes:Headline': Headline,
   'TYPO3.Neos.NodeTypes:Text': Text,
-  'TYPO3.Neos.NodeTypes:Image': Image,
-  'Sfi.Site:Carousel': Carousel,
-  'Sfi.Site:Row': Row,
-  'Sfi.Site:Column': Column
+  'TYPO3.Neos:ContentCollection': ContentCollection,
+  'TYPO3.Neos.NodeTypes:TwoColumn': Column,
+  'TYPO3.Neos.NodeTypes:ThreeColumn': Column,
+  'TYPO3.Neos.NodeTypes:FourColumn': Column
 });

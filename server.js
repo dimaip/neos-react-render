@@ -1,9 +1,7 @@
 import 'babel-polyfill';
-require('es6-promise').polyfill();
 require('isomorphic-fetch');
 import koa from 'koa';
-// import koaProxy from 'koa-proxy';
-import koaStatic from 'koa-static';
+import koaProxy from 'koa-proxy';
 import Transmit from 'react-transmit';
 import Root from 'Components/Root';
 
@@ -12,14 +10,12 @@ try {
   const hostname = process.env.HOSTNAME || 'localhost';
   const port = process.env.PORT || 3000;
   const webserver = `http://${hostname}:${port}`;
+  const neosBackendUrl = 'http://dev.neos-react.loc';
 
-  app.use(koaStatic('static'));
-
-  // app.use(koaProxy({
-  //   host: githubApi.url,
-  //   match: /^\/api\/github\//i,
-  //   map: (path) => path.replace(/^\/api\/github\//i, '/')
-  // }));
+  app.use(koaProxy({
+    host: neosBackendUrl,
+    match: /^\/query/i,
+  }));
 
   app.use(function *(next) {
     yield ((callback) => {
@@ -38,7 +34,7 @@ try {
         );
 
         this.type = 'text/html';
-        this.body = Transmit.injectIntoMarkup(template, reactData, [`${webserver}/dist/client.js`]);
+        this.body = Transmit.injectIntoMarkup(template, reactData);
 
         callback(null);
       }).catch(e => {

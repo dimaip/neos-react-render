@@ -4,26 +4,22 @@ import ContentCase from 'Components/ContentCase';
 import resolver from 'Helpers/resolver';
 import {q} from 'Vendor/FlowQuery';
 
-const Column = (props) => (
-  <div className='Columns' style={{display: 'flex'}}>
-    {props.data.map((itemProps, i) => (
-      <div className='Column'>
-        <ContentCase key={i} {...itemProps} />
-      </div>
-    ))}
+const ContentCollection = (props) => (
+  <div className='ContentCollection'>
+    {props.data.map((itemProps, i) => <ContentCase key={i} {...itemProps} />)}
   </div>
 );
-Column.propTypes = {
+ContentCollection.propTypes = {
   data: React.PropTypes.array.isRequired
 };
 
-const WrappedColumn = Transmit.createContainer(Column, {
+const WrappedContentCollection = Transmit.createContainer(ContentCollection, {
   initialVariables: {},
   fragments: {
     data({node}) {
       let nodes;
       return resolver(
-        q(node).children('[instanceof TYPO3.Neos:ContentCollection]')
+        q(node).children()
           .shape({
             contextPath: 'contextPath',
             nodeType: 'nodeType',
@@ -34,4 +30,4 @@ const WrappedColumn = Transmit.createContainer(Column, {
   }
 });
 
-export default WrappedColumn;
+export default WrappedContentCollection;

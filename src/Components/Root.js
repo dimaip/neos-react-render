@@ -3,10 +3,11 @@ import Transmit from 'react-transmit';
 import 'Components/NodeTypes/index';
 import ContentCase from 'Components/ContentCase';
 import Layout from 'Components/Layout';
+import {q} from 'Vendor/FlowQuery';
 
 const Root = ({data}) => (
   <Layout>
-    {data.map((i, j) => <ContentCase key={j} {...i} />)}
+    <ContentCase {...data} />
   </Layout>
 );
 Root.propTypes = {
@@ -17,20 +18,24 @@ const WrappedRoot = Transmit.createContainer(Root, {
   initialVariables: {},
   fragments: {
     data() {
-      let nodes;
-      return fetch('http://localhost:3000/main.json')
-        .then(r => r.json())
+      let node;
+      // For now we are rendering the root page, but we can buil contextPath of current documentNode from url
+      return q('site').shape({
+          contextPath: 'contextPath',
+          nodeType: 'nodeType',
+          properties: {
+            title: 'title'
+          }
+        }).get()
         .then(i => {
-          nodes = i;
-          return Promise.all(i.map(node => {
-            return ContentCase.getFragment('data', {node});
-          }));
+          node = i[0];
+          return ContentCase.getFragment('data', {node});
         })
-        .then(datas => {
-          return datas.map((i, j) => ({
-            node: nodes[j],
-            data: i
-          }));
+        .then(data => {
+          return {
+            node,
+            data
+          };
         });
     }
   }

@@ -1,23 +1,32 @@
-import connect from 'API/connect';
-import Carousel from './Carousel';
-import Layout from 'Components/Layout';
+import React from 'react';
+import Transmit from 'react-transmit';
+import ContentCase from 'Components/ContentCase';
+import resolver from 'Helpers/resolver';
+import {q} from 'Vendor/FlowQuery';
 
-@connect(
-    ({node}) => ({
-        mainContent: q(node).children('main').children().get(),
-        carouselNode: q(node).children('carousel').get(0)
-    })
-)
-class Page extends React.Component {
-    render() {
-        const mainContent = this.props.mainContent.map(i => ContentCase(i, nodeTypeRenderers));
-        return (
-            <Layout>
-                <div>{mainContent}</div>
-                <div>
-                    <Carousel node={this.props.carouselNode} attributes={{className: 'Carousel'}} />
-                </div>
-            </Layout>
-        );
+const Page = ({node, data}) => (
+  <div>
+    <h1 style={{backgroundColor: 'yellow'}}>{node.properties.title}</h1>
+    <div style={{border: '2px dashed gray', padding: '12px'}}>
+      {data.map((i, j) => <ContentCase key={j} {...i} />)}
+    </div>
+  </div>
+);
+Page.propTypes = {
+  data: React.PropTypes.array.isRequired
+};
+
+const WrappedPage = Transmit.createContainer(Page, {
+  initialVariables: {},
+  fragments: {
+    data({node}) {
+      return resolver(q(node).children('main').children().shape({
+          contextPath: 'contextPath',
+          nodeType: 'nodeType',
+          properties: 'properties'
+        }).get());
     }
-}
+  }
+});
+
+export default WrappedPage;
